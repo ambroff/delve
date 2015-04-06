@@ -10,7 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	sys "golang.org/x/sys/unix"
+	// KWA FIXME this needs to be abstracted away
+	//sys "golang.org/x/sys/unix"
+	sys "golang.org/x/sys/windows"
 
 	"github.com/derekparker/delve/command"
 	"github.com/derekparker/delve/proctl"
@@ -159,10 +161,11 @@ func handleExit(dbp *proctl.DebuggedProcess, t *Term, status int) {
 		answer = strings.TrimSuffix(answer, "\n")
 
 		fmt.Println("Detaching from process...")
-		err = sys.PtraceDetach(dbp.Process.Pid)
-		if err != nil {
-			t.die(2, "Could not detach", err)
-		}
+		fmt.Println("KWA PtraceDetach() not implemented on windows")
+		//err = sys.PtraceDetach(dbp.Process.Pid)
+		//if err != nil {
+		//	t.die(2, "Could not detach", err)
+		//}
 
 		if answer == "y" {
 			fmt.Println("Killing process", dbp.Process.Pid)

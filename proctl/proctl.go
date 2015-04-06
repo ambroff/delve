@@ -12,9 +12,11 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"syscall"
+	//"syscall"
 
-	sys "golang.org/x/sys/unix"
+	// KWA FIXME this needs to be abstracted away
+	//sys "golang.org/x/sys/unix"
+	sys "golang.org/x/sys/windows"
 
 	"github.com/derekparker/delve/dwarf/frame"
 	"github.com/derekparker/delve/dwarf/line"
@@ -79,7 +81,8 @@ func Launch(cmd []string) (*DebuggedProcess, error) {
 	proc.Args = cmd
 	proc.Stdout = os.Stdout
 	proc.Stderr = os.Stderr
-	proc.SysProcAttr = &syscall.SysProcAttr{Ptrace: true}
+	fmt.Println("KWA no field SysProcAttr.Ptrace on windows")
+	//proc.SysProcAttr = &syscall.SysProcAttr{Ptrace: true}
 
 	if err := proc.Start(); err != nil {
 		return nil, err
@@ -438,10 +441,13 @@ func newDebugProcess(pid int, attach bool) (*DebuggedProcess, error) {
 	}
 
 	if attach {
-		err := sys.PtraceAttach(pid)
-		if err != nil {
-			return nil, err
-		}
+		// KWA FIXME: this needs to be abstracted away
+		fmt.Println("PTraceAttach() not implemented on windows")
+		//err := sys.PtraceAttach(pid)
+		//if err != nil {
+		//	return nil, err
+		//}
+		var err error
 		_, _, err = wait(pid, 0)
 		if err != nil {
 			return nil, err

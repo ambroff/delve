@@ -4,7 +4,8 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	sys "golang.org/x/sys/unix"
+	//sys "golang.org/x/sys/unix"
+	sys "golang.org/x/sys/windows"
 )
 
 // ThreadContext represents a single thread in the traced process
